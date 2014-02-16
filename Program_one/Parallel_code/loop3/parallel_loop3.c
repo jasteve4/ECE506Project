@@ -2,6 +2,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include <math.h>
+#include <omp.h>
+#include <time.h>
+#include <sys/time.h>
 
 #define FILE_INPUT 0
 
@@ -89,13 +92,16 @@ int main(int argc, char ** argv)
 		for(j=0;j<points;j++)
 		{
 			mul =1;
-			/* LOOP #3 */
-			for(k=0;k<points;k++)
-			{
-				if(X[j]==X[k])
-				continue;
-				mul*=((x-X[k])/(X[j]-X[k]));
-			}
+			#pragma omp parallel num_threads(8) shared(X, x, i, j) private(k) reduction(*,mull)
+                        {
+			  for(k=0;k<points;k++)
+			  {
+				
+                                  if(X[j]==X[k])
+			          continue;
+				  mul*=((x-X[k])/(X[j]-X[k]));
+			  }
+                        }
 
 			sum+=mul*M[i][j];
 		}

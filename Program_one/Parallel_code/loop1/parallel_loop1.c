@@ -2,6 +2,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include <math.h>
+#include <omp.h>
+#include <time.h>
+#include <sys/time.h>
 
 #define FILE_INPUT 0
 
@@ -81,7 +84,7 @@ int main(int argc, char ** argv)
 	gettimeofday(&start_tv, NULL);
 
 	sum_avg = 0;
-	/* LOOP #1 */
+	
 	for(i=0;i<n;i++)
 	{
 		sum=0;
